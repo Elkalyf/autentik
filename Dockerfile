@@ -19,6 +19,8 @@ WORKDIR /home/authentik
 # Clone and install Authentik
 RUN git clone https://github.com/goauthentik/authentik.git /home/authentik/authentik
 WORKDIR /home/authentik/authentik
+USER root
+
 RUN pip install --upgrade pip && pip install .[postgres]
 
 # Back to home directory
