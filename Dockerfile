@@ -4,27 +4,28 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    curl gnupg2 ca-certificates redis-server postgresql supervisor \
+    curl gnupg2 ca-certificates \
+    redis-server postgresql supervisor \
     python3 python3-pip python3-venv \
-    libpq-dev build-essential git
+    libpq-dev build-essential git \
+    libffi-dev libssl-dev \
+    libxml2-dev libxslt1-dev \
+    libjpeg-dev zlib1g-dev \
+    gcc make
 
-# Add Authentik user and home
+
+# Create Authentik user and venv
 RUN useradd -m authentik
-
-# Install Authentik
 USER authentik
 WORKDIR /home/authentik
-
 RUN python3 -m venv venv
 ENV PATH="/home/authentik/venv/bin:$PATH"
 
-# Upgrade pip
+
+
+# Install pip and Authentik
 RUN pip install --upgrade pip
-
-# Clone Authentik source
 RUN git clone https://github.com/goauthentik/authentik.git /home/authentik/authentik
-
-# Install Authentik with Postgres support
 WORKDIR /home/authentik/authentik
 RUN pip install .[postgres]
 
