@@ -11,7 +11,9 @@ RUN apt-get update && apt-get install -y \
     libffi-dev libssl-dev \
     libxml2-dev libxslt1-dev \
     libjpeg-dev zlib1g-dev \
-    gcc make
+    gcc make \
+    libkrb5-dev
+
 
 
 # Create Authentik user and venv
