@@ -18,8 +18,16 @@ WORKDIR /home/authentik
 RUN python3 -m venv venv
 ENV PATH="/home/authentik/venv/bin:$PATH"
 
-RUN pip install --upgrade pip && \
-    pip install authentik[postgres]
+# Upgrade pip
+RUN pip install --upgrade pip
+
+# Clone Authentik source
+RUN git clone https://github.com/goauthentik/authentik.git /home/authentik/authentik
+
+# Install Authentik with Postgres support
+WORKDIR /home/authentik/authentik
+RUN pip install .[postgres]
+
 
 # Setup folders
 RUN mkdir -p /home/authentik/media /home/authentik/templates /home/authentik/certs
