@@ -1,36 +1,28 @@
-FROM debian:bullseye
+FROM python:3.12-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    curl gnupg2 ca-certificates \
     redis-server postgresql supervisor \
-    python3 python3-pip python3-venv \
     libpq-dev build-essential git \
     libffi-dev libssl-dev \
     libxml2-dev libxslt1-dev \
     libjpeg-dev zlib1g-dev \
-    gcc make \
-    libkrb5-dev
+    libkrb5-dev curl
 
-
-
-# Create Authentik user and venv
+# Add Authentik user
 RUN useradd -m authentik
 USER authentik
 WORKDIR /home/authentik
-RUN python3 -m venv venv
-ENV PATH="/home/authentik/venv/bin:$PATH"
 
-
-
-# Install pip and Authentik
-RUN pip install --upgrade pip
+# Clone and install Authentik
 RUN git clone https://github.com/goauthentik/authentik.git /home/authentik/authentik
 WORKDIR /home/authentik/authentik
-RUN pip install .[postgres]
+RUN pip install --upgrade pip && pip install .[postgres]
 
+# Back to home directory
+WORKDIR /home/authentik
 
 # Setup folders
 RUN mkdir -p /home/authentik/media /home/authentik/templates /home/authentik/certs
