@@ -32,6 +32,6 @@ USER root
 COPY supervisord.conf /etc/supervisor/conf.d/authentik.conf
 
 EXPOSE 9000 9443
-RUN echo "🔍 Searching for authentik binary..." && find / -type f -name authentik 2>/dev/null
+RUN echo "🔍 Searching for authentik binary..." && (find / -type f -name authentik 2>/dev/null || true)
 
 CMD ["/usr/bin/supervisord"]
