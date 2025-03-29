@@ -2,6 +2,7 @@ FROM python:3.12-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
+ENV PATH="/usr/local/bin:$PATH"
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
