@@ -2,7 +2,6 @@ FROM python:3.12-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
-ENV PATH="/usr/local/bin:$PATH"
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -32,5 +31,8 @@ RUN mkdir -p /opt/authentik/media /opt/authentik/templates /opt/authentik/certs
 COPY supervisord.conf /etc/supervisor/conf.d/authentik.conf
 
 EXPOSE 9000 9443
+
+ENV PATH="/usr/local/bin:$PATH"
+
 
 CMD ["/usr/bin/supervisord"]
